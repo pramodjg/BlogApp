@@ -19,46 +19,37 @@ class DetailPage extends Component
 {
   constructor(props)
   {
-
     super(props);
-
   }
   render() {
     return (
-     <Navigator
-         renderScene={this.renderScene.bind(this)}
-         navigator={this.props.navigator}
-         navigationBar={
-           <Navigator.NavigationBar style={styles.navbarstyle}
-               routeMapper={NavigationBarRouteMapper} />
-         } />
+      <Navigator
+          renderScene={this.renderScene.bind(this)}
+          navigator={this.props.navigator}
+          navigationBar={
+            <Navigator.NavigationBar style={styles.navbarstyle}
+                routeMapper={NavigationBarRouteMapper} />
+          }
+           />
    );
 
 }
 renderScene(route, navigator) {
 
+
   return (
 
-    // <ViewPagerAndroid
-    //   style={styles.viewPager}
-    //   initialPage={0}>
-    //   <View style={styles.pageStyle}>
-    //     <Text>{news_items.title}</Text>
-    //   </View>
-    //   <View style={styles.pageStyle}>
-    //     <Text>{news_items.content}</Text>
-    //   </View>
-    // </ViewPagerAndroid>
+
     <ScrollView style={{flex: 1}}>
-    <View style={styles.container}>
-      <Text style={styles.textStyle}>  {route.data.username}</Text>
-        <View style={styles.container}>
-      <Text numberOfLines={50}>
-
-        </Text>
-        </View>
-
-    </View>
+      <View style={styles.container}>
+          <Text style={styles.textStyle}>
+            {this.props.jsoncontent.title}</Text>
+            <View style={styles.container}>
+              <Text>
+                      {this.props.jsoncontent.content}
+              </Text>
+            </View>
+      </View>
     </ScrollView>
   );
 }

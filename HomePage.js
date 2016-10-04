@@ -92,7 +92,11 @@ class HomePage extends Component
     this.props.navigator.push({
       id: 'DetailPage',
       name: 'DetailPage',
-      data:{username:'checkuser'}
+      passProps: {
+      position:rowID,
+      jsoncontent: rowData
+
+    }
     });
 
   }
