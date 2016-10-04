@@ -43,7 +43,7 @@ class App extends Component {
       return (
         <DetailPage
           navigator={navigator}
-        {...route.passProps} 
+          {...route.passProps} 
           />
       );
     }

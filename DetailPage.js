@@ -38,11 +38,9 @@ renderScene(route, navigator) {
 
 
   return (
-
-
     <ScrollView style={{flex: 1}}>
       <View style={styles.container}>
-          <Text style={styles.textStyle}>
+          <Text style={styles.titleStyle}>
             {this.props.jsoncontent.title}</Text>
             <View style={styles.container}>
               <Text>
@@ -120,6 +118,13 @@ flex: 1,
    flex: 1,
    height: StyleSheet.hairlineWidth,
    backgroundColor: '#000000',
+ },
+ titleStyle: {
+   fontSize:12,
+   color: '#FF0000',
+   paddingTop:50,
+   fontSize:20
+
  },
  textStyle: {
    fontSize:12,

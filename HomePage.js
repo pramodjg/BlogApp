@@ -9,6 +9,7 @@ import {
   TouchableHighlight,
   TouchableOpacity,
   Navigator,
+  RefreshControl,
   View,
 } from 'react-native';
 
@@ -22,13 +23,21 @@ class HomePage extends Component
   constructor(props)
   {
     super(props);
-
+    this.state = {
+      refreshing: false,
+    };
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
                   dataSource: ds.cloneWithRows(news_items),
                   username:"Test User"
 
                  };
+  }
+  _onRefresh() {
+    this.setState({refreshing: true});
+    fetchData().then(() => {
+      this.setState({refreshing: false});
+    });
   }
   render()
   {
@@ -49,6 +58,13 @@ class HomePage extends Component
       <View style={{paddingTop: 22,flex:1}}>
         <ListView
          showLoadMore={true}
+         initialListSize={10}
+         refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh.bind(this)}
+          />
+        }
           dataSource={this.state.dataSource}
           renderRow={this.renderRow.bind(this)}
           renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator}/>}
