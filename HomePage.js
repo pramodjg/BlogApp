@@ -13,9 +13,8 @@ import {
   View,
 } from 'react-native';
 
-import news_items from './mock_data.json';
-//var news_items = require("./mock_data.json");
 
+var Api = require('./RssFeedApi');
 
 class HomePage extends Component
 {
@@ -23,21 +22,47 @@ class HomePage extends Component
   constructor(props)
   {
     super(props);
-    this.state = {
-      refreshing: false,
-    };
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-                  dataSource: ds.cloneWithRows(news_items),
-                  username:"Test User"
-
+                  ds:null,
+                  dataSource: ds,
+                  username:"Test User",
+                  refreshing: false,
+                  isLoading: false
                  };
   }
-  _onRefresh() {
-    this.setState({refreshing: true});
-    fetchData().then(() => {
-      this.setState({refreshing: false});
+
+  _addFeed() {
+    const url='https://lightrains.com/feed.xml';
+    Api.fetchRss(url).then((res) => {
+      if (res.responseStatus == 200) {
+        var resFeed = res.responseData.feed;
+        this.setState({dataSource:this.state.dataSource.cloneWithRows(resFeed.entries)});
+        this.setState({refreshing: false});
+      }
     });
+  }
+
+/* calling google api for parsing xml before loading the component */
+
+  componentWillMount()
+  {
+
+    const url='https://lightrains.com/feed.xml';
+    Api.fetchRss(url).then((res) => {
+      if (res.responseStatus == 200) {
+        var resFeed = res.responseData.feed;
+        // this.setState({ds: resFeed.entries});
+        // this.setState({dataSource:ds});
+        this.setState({dataSource:this.state.dataSource.cloneWithRows(resFeed.entries)});
+        this.setState({refreshing: false});
+      }
+    });
+
+  }
+  _onRefresh()
+  {
+    this.setState({refreshing: true});
   }
   render()
   {
@@ -62,7 +87,7 @@ class HomePage extends Component
          refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}
-            onRefresh={this._onRefresh.bind(this)}
+            onRefresh={this._addFeed.bind(this)}
           />
         }
           dataSource={this.state.dataSource}
@@ -72,11 +97,7 @@ class HomePage extends Component
       </View>
     );
   }
-  componentDidMount(){
 
-       this.setState({ dataSource: this.state.dataSource.cloneWithRows(news_items) });
-
-     }
   renderRow(rowData, sectionID, rowID, highlightRow: (sectionID: number, rowID: number) => void){
   //   var rowHash = Math.abs(hashCode(rowData));
 
@@ -90,10 +111,9 @@ class HomePage extends Component
         >
         <View style ={styles.row}>
           <Text style={styles.textStyle}>{rowData.title}</Text>
-
           <View style={{flexDirection: 'row'}}>
                <Text numberOfLines={3} style={styles.content_summary}>
-                 {rowData.description}
+                {rowData.contentSnippet}
                </Text>
            </View>
         </View>
@@ -102,8 +122,8 @@ class HomePage extends Component
     )
   }
 
-  _pressRow(rowID,rowData) {
-
+  _pressRow(rowID,rowData)
+ {
 
     this.props.navigator.push({
       id: 'DetailPage',
@@ -111,7 +131,6 @@ class HomePage extends Component
       passProps: {
       position:rowID,
       jsoncontent: rowData
-
     }
     });
 

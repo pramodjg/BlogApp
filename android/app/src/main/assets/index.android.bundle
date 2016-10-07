@@ -1497,14 +1497,16 @@ var _reactNative=require(44 /* react-native */);
 
 
 
-
-
 var HomePage=require(647 /* ./HomePage */);
-var DetailPage=require(649 /* ./DetailPage */);var
+var DetailPage=require(650 /* ./DetailPage */);var
 
 
 App=function(_Component){babelHelpers.inherits(App,_Component);function App(){babelHelpers.classCallCheck(this,App);return babelHelpers.possibleConstructorReturn(this,(App.__proto__||Object.getPrototypeOf(App)).apply(this,arguments));}babelHelpers.createClass(App,[{key:'render',value:function render()
+
+
+
 {
+
 return(
 _react2.default.createElement(_reactNative.Navigator,{
 initialRoute:{id:'HomePage',name:'Index'},
@@ -81412,9 +81414,9 @@ var _reactNative=require(44 /* react-native */);
 
 
 
-var _mock_data=require(648 /* ./mock_data.json */);var _mock_data2=babelHelpers.interopRequireDefault(_mock_data);var
 
 
+var _mock_data=require(648 /* ./mock_data.json */);var _mock_data2=babelHelpers.interopRequireDefault(_mock_data);var Api=require(649 /* ./RssFeedApi */);var
 
 HomePage=function(_Component){babelHelpers.inherits(HomePage,_Component);
 
@@ -81423,7 +81425,9 @@ function HomePage(props)
 {babelHelpers.classCallCheck(this,HomePage);var _this=babelHelpers.possibleConstructorReturn(this,(HomePage.__proto__||Object.getPrototypeOf(HomePage)).call(this,
 props));
 _this.state={
-refreshing:false};
+refreshing:false,
+isLoading:false};
+
 
 var ds=new _reactNative.ListView.DataSource({rowHasChanged:function rowHasChanged(r1,r2){return r1!==r2;}});
 _this.state={
@@ -81431,12 +81435,27 @@ dataSource:ds.cloneWithRows(_mock_data2.default),
 username:"Test User"};return _this;
 
 
-}babelHelpers.createClass(HomePage,[{key:'_onRefresh',value:function _onRefresh()
+}babelHelpers.createClass(HomePage,[{key:'_addFeed',value:function _addFeed()
+
 {var _this2=this;
-this.setState({refreshing:true});
-fetchData().then(function(){
+
+var url='https://lightrains.com/feed.xml';
+console.log(url);
+Api.fetchRss(url).then(function(res){
+if(res.responseStatus==200){
+var resFeed=res.responseData.feed;
+_this2.setState({dataSource:_this2.state.dataSource.cloneWithRows(resFeed)});
 _this2.setState({refreshing:false});
+console.log("tick"+resFeed);
+return resFeed;
+}
 });
+}},{key:'_onRefresh',value:function _onRefresh()
+
+{
+
+this.setState({refreshing:true});
+
 }},{key:'render',value:function render()
 
 {
@@ -81461,7 +81480,7 @@ initialListSize:10,
 refreshControl:
 _react2.default.createElement(_reactNative.RefreshControl,{
 refreshing:this.state.refreshing,
-onRefresh:this._onRefresh.bind(this)}),
+onRefresh:this._addFeed.bind(this)}),
 
 
 dataSource:this.state.dataSource,
@@ -81470,10 +81489,15 @@ renderSeparator:function renderSeparator(sectionId,rowId){return _react2.default
 
 
 
-}},{key:'componentDidMount',value:function componentDidMount()
-{
+}},{key:'componentWillMount',value:function componentWillMount()
 
-this.setState({dataSource:this.state.dataSource.cloneWithRows(_mock_data2.default)});
+{
+this._addFeed.bind(this);
+}},{key:'componentDidMount',value:function componentDidMount()
+
+{
+var feedData=this._addFeed.bind(this);
+this.setState({dataSource:this.state.dataSource.cloneWithRows(feedData)});
 
 }},{key:'renderRow',value:function renderRow(
 rowData,sectionID,rowID,highlightRow){var _this3=this;
@@ -81488,11 +81512,11 @@ highlightRow(sectionID,rowID);
 }},
 
 _react2.default.createElement(_reactNative.View,{style:styles.row},
-_react2.default.createElement(_reactNative.Text,{style:styles.textStyle},rowData.title),
+_react2.default.createElement(_reactNative.Text,{style:styles.textStyle},feedData.item.title),
 
 _react2.default.createElement(_reactNative.View,{style:{flexDirection:'row'}},
-_react2.default.createElement(_reactNative.Text,{numberOfLines:3,style:styles.content_summary},
-rowData.description)))));
+_react2.default.createElement(_reactNative.Text,{numberOfLines:3,style:styles.content_summary})))));
+
 
 
 
@@ -81501,8 +81525,8 @@ rowData.description)))));
 
 }},{key:'_pressRow',value:function _pressRow(
 
-rowID,rowData){
-
+rowID,rowData)
+{
 
 this.props.navigator.push({
 id:'DetailPage',
@@ -81902,7 +81926,24 @@ __d(648 /* blogapp/mock_data.json */, function(global, require, module, exports)
 "description":"Contracts live on the blockchain in an Ethereum-specific binary format (Ethereum Virtual Machine (=EVM) bytecode). This tutorial explains how to deploy the byte code to Ethereum Blockchain For the frontier release, geth supports solidity compilation through system call to solc, the command line solidity compiler by Christian R. and Lefteris K. Step 1. Install Solidity Compiler Solc Easy way Its very easy to install solc using npm the package manager for NodeJS the command is npm install solc Easier way Browser-Solidity If you just want to try Solidity for small contracts, you can try browser-solidity which does not need any installation. If you want to use it without connection to the Internet, you can also just save the page locally or clone http://github.com/chriseth/browser-solidity. Building from Source Assuming you are using Ubuntu 14.04 sudo apt-add-repository ppa:george-edison55/cmake-3.x sudo apt-get -y update sudo apt-get -y install language-pack-en-base sudo dpkg-reconfigure locales sudo apt-get -y install software-properties-common sudo add-apt-repository -y ppa:ethereum/ethereum sudo add-apt-repository -y ppa:ethereum/ethereum-dev sudo apt-get -y update sudo apt-get -y upgrade And pull the solidity source code git clone --recursive https://github.com/ethereum/webthree-umbrella.git cd webthree-umbrella ./webthree-helpers/scripts/ethupdate.sh --no-push --simple-pull --project solidity # update Solidity repo ./webthree-helpers/scripts/ethbuild.sh --no-git --project solidity --all --cores 4 -DEVMJIT=0 Step 2. Verify Solidity Compiler To ensure solc is installed and ready to use, you can verify it by running eth.getCompilers() in geth console If you have it installed, it should output something like this: ['Solidity' ] Bonus. Compile a simple contract Let us take this simple contract source: source = \"contract test { function multiply(uint a) returns(uint d) { return a * 7; } }\" This contract offers a unary method: called with a positive integer a, it returns a * 7. You are ready to compile solidity code in the geth JS console using eth.compile.solidity &gt; contract = eth.compile.solidity(source).test { code:...",
 "content":"Contracts live on the blockchain in an Ethereum-specific binary format (Ethereum Virtual Machine (=EVM) bytecode). This tutorial explains how to deploy the byte code to Ethereum Blockchain For the frontier release, geth supports solidity compilation through system call to solc, the command line solidity compiler by Christian R. and Lefteris K. Step 1. Install Solidity Compiler Solc Easy way Its very easy to install solc using npm the package manager for NodeJS the command is npm install solc Easier way Browser-Solidity If you just want to try Solidity for small contracts, you can try browser-solidity which does not need any installation. If you want to use it without connection to the Internet, you can also just save the page locally or clone http://github.com/chriseth/browser-solidity. Building from Source Assuming you are using Ubuntu 14.04 sudo apt-add-repository ppa:george-edison55/cmake-3.x sudo apt-get -y update sudo apt-get -y install language-pack-en-base sudo dpkg-reconfigure locales sudo apt-get -y install software-properties-common sudo add-apt-repository -y ppa:ethereum/ethereum sudo add-apt-repository -y ppa:ethereum/ethereum-dev sudo apt-get -y update sudo apt-get -y upgrade And pull the solidity source code git clone --recursive https://github.com/ethereum/webthree-umbrella.git cd webthree-umbrella ./webthree-helpers/scripts/ethupdate.sh --no-push --simple-pull --project solidity # update Solidity repo ./webthree-helpers/scripts/ethbuild.sh --no-git --project solidity --all --cores 4 -DEVMJIT=0 Step 2. Verify Solidity Compiler To ensure solc is installed and ready to use, you can verify it by running eth.getCompilers() in geth console If you have it installed, it should output something like this: ['Solidity' ] Bonus. Compile a simple contract Let us take this simple contract source: source = \"contract test { function multiply(uint a) returns(uint d) { return a * 7; } }\" This contract offers a unary method: called with a positive integer a, it returns a * 7. You are ready to compile solidity code in the geth JS console using eth.compile.solidity &gt; contract = eth.compile.solidity(source).test { code:..."}];
 }, "blogapp/mock_data.json");
-__d(649 /* blogapp/DetailPage.js */, function(global, require, module, exports) {var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+__d(649 /* blogapp/RssFeedApi.js */, function(global, require, module, exports) {'use strict';
+
+var Api={
+fetchRss:function fetchRss(url){
+if(!/^https:\/\//.test(url)){
+url="https://"+url;
+}
+
+var GOOGLE_FEED_API_URL='https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=-1&q=';
+var url=GOOGLE_FEED_API_URL+encodeURIComponent(url);
+
+return fetch(url).then(function(res){return res.json();});
+}};
+
+
+module.exports=Api;
+}, "blogapp/RssFeedApi.js");
+__d(650 /* blogapp/DetailPage.js */, function(global, require, module, exports) {var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(44 /* react-native */);
 
 
@@ -81917,16 +81958,18 @@ var _reactNative=require(44 /* react-native */);
 
 
 
+var _mock_data=require(648 /* ./mock_data.json */);var _mock_data2=babelHelpers.interopRequireDefault(_mock_data);
 
-
-var _mock_data=require(648 /* ./mock_data.json */);var _mock_data2=babelHelpers.interopRequireDefault(_mock_data);var
-
+var GOOGLE_FEED_URL="https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=-1&q=";
+var LIGHT_FEED_URL="https://lightrains.com/feed.xml";var
 DetailPage=function(_Component){babelHelpers.inherits(DetailPage,_Component);
 
 function DetailPage(props)
 {babelHelpers.classCallCheck(this,DetailPage);return babelHelpers.possibleConstructorReturn(this,(DetailPage.__proto__||Object.getPrototypeOf(DetailPage)).call(this,
 props));
 }babelHelpers.createClass(DetailPage,[{key:'render',value:function render()
+
+
 {
 return(
 _react2.default.createElement(_reactNative.Navigator,{
@@ -81939,14 +81982,43 @@ routeMapper:NavigationBarRouteMapper})}));
 
 
 
+}},{key:'componentDidMount',value:function componentDidMount()
+{
+var content=this._getFeed();
+
+}},{key:'_getFeed',value:function _getFeed()
+
+{
+var response=fetch(GOOGLE_FEED_URL+LIGHT_FEED_URL);
+console.log(response);
+if(!/^https:\/\//.test(LIGHT_FEED_URL)){
+url="https://"+LIGHT_FEED_URL;
+}
+
+
+var url=GOOGLE_FEED_URL+encodeURIComponent(url);
+
+return fetch(url,{
+method:'GET',
+headers:{
+'Accept':'application/json'}});
+
+
+
 }},{key:'renderScene',value:function renderScene(
 route,navigator){
 
 
 return(
+
 _react2.default.createElement(_reactNative.ScrollView,{style:{flex:1}},
 _react2.default.createElement(_reactNative.View,{style:styles.container},
-_react2.default.createElement(_reactNative.WebView,{source:this.props.jsoncontent.link}))));
+_react2.default.createElement(_reactNative.Text,{style:styles.titleStyle},
+this.props.jsoncontent.title),
+_react2.default.createElement(_reactNative.View,{style:styles.container},
+_react2.default.createElement(_reactNative.Text,null,
+this.props.jsoncontent.content)))));
+
 
 
 

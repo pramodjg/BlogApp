@@ -13,14 +13,15 @@ import {
   View
 } from 'react-native';
 
-import news_items from './mock_data.json';
-
+;
 class DetailPage extends Component
 {
   constructor(props)
   {
     super(props);
   }
+
+
   render() {
     return (
       <Navigator
@@ -35,9 +36,8 @@ class DetailPage extends Component
 
 }
 renderScene(route, navigator) {
-
-
   return (
+
     <ScrollView style={{flex: 1}}>
       <View style={styles.container}>
           <Text style={styles.titleStyle}>

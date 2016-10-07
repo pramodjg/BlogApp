@@ -11,14 +11,14 @@ import {
 } from 'react-native';
 
 
-
-
 var HomePage = require('./HomePage');
 var DetailPage = require('./DetailPage');
 
 
 class App extends Component {
+
   render() {
+
     return (
       <Navigator
           initialRoute={{id: 'HomePage', name: 'Index'}}
@@ -43,7 +43,7 @@ class App extends Component {
       return (
         <DetailPage
           navigator={navigator}
-          {...route.passProps} 
+          {...route.passProps}
           />
       );
     }
