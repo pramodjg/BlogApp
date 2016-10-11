@@ -1,24 +1,26 @@
 
+
 import React, { Component } from 'react';
+
 import {
-  AppRegistry,
   StyleSheet,
-  Image,
   Text,
+  View,
+  ToolbarAndroid,
+  TouchableOpacity,
+  AppRegistry,
+   Image,
   ListView,
   TouchableHighlight,
-  TouchableOpacity,
-  Navigator,
-  RefreshControl,
-  View,
+    RefreshControl,
+
 } from 'react-native';
 
-
+var _navigator;
 var Api = require('./RssFeedApi');
 
-class HomePage extends Component
-{
-  // Initialize the hardcoded data
+class HomePage extends Component {
+
   constructor(props)
   {
     super(props);
@@ -42,9 +44,9 @@ class HomePage extends Component
       }
     });
   }
-
-/* calling google api for parsing xml before loading the component */
-
+//
+// /* calling google api for parsing xml before loading the component */
+//
   componentWillMount()
   {
 
@@ -64,43 +66,49 @@ class HomePage extends Component
   {
     this.setState({refreshing: true});
   }
-  render()
-  {
-    return (
-    <Navigator
-        renderScene={this.renderScene.bind(this)}
-        navigationBar={
-                          <Navigator.NavigationBar style={styles.navbarstyle}
-                          routeMapper={NavigationBarRouteMapper} />
-                        }
-      />
-  );
 
-  }
-  renderScene(route, navigator) {
-    return (
+	_navigateToSettings () {
+		this.props.navigator.push({
+			id: 'detailview'
+		});
+	}
 
-      <View style={{paddingTop: 22,flex:1}}>
-        <ListView
-         showLoadMore={true}
-         initialListSize={10}
-         refreshControl={
-          <RefreshControl
-            refreshing={this.state.refreshing}
-            onRefresh={this._addFeed.bind(this)}
-          />
-        }
-          dataSource={this.state.dataSource}
-          renderRow={this.renderRow.bind(this)}
-          renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator}/>}
+	_onActionSelected () {
+		this._navigateToSettings()
+	}
+
+	render () {
+		_navigator = this.props.navigator;
+		return (
+			<View style={styles.parentContainer}>
+				<ToolbarAndroid
+					title='Home'
+					logo={require('./images/logo.png')}
+          actions={toolbarActions}
+          style={styles.toolbar}
+          titleColor='white'
+          onActionSelected={() => this._onActionSelected()}
         />
-      </View>
-    );
-  }
+        <View style={styles.container}>
+					<ListView
+           showLoadMore={true}
+           initialListSize={10}
+           refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._addFeed.bind(this)}
+            />
+          }
+            dataSource={this.state.dataSource}
+            renderRow={this.renderRow.bind(this)}
+            renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator}/>}
+          />
+	      </View>
+			</View>
+		)
+	}
 
   renderRow(rowData, sectionID, rowID, highlightRow: (sectionID: number, rowID: number) => void){
-  //   var rowHash = Math.abs(hashCode(rowData));
-
     return (
       <TouchableHighlight
         underlayColor = '#F0F0F0'
@@ -121,105 +129,100 @@ class HomePage extends Component
 
     )
   }
+    _pressRow(rowID,rowData)
+   {
+      this.props.navigator.push({
+        id: 'detailview',
+        name: 'detailview',
+        passProps: {
+        position:rowID,
+        jsoncontent: rowData
+      }
+      });
 
-  _pressRow(rowID,rowData)
- {
-
-    this.props.navigator.push({
-      id: 'DetailPage',
-      name: 'DetailPage',
-      passProps: {
-      position:rowID,
-      jsoncontent: rowData
     }
-    });
 
-  }
 }
-var hashCode = function(str) {
-  var hash = 15;
-  for (var ii = str.length - 1; ii >= 0; ii--) {
-    hash = ((hash << 5) - hash) + str.charCodeAt(ii);
-  }
-  return hash;
-};
-
-
+var toolbarActions = [
+	{title: 'DetailView', icon: require('./images/settings.png'), show: 'always'},
+];
 const styles = StyleSheet.create({
-  container: {
-
+	parentContainer: {
+		flex: 1,
+	},
+	container: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FF0000',
+    backgroundColor: '#F5FCFF',
+  },
+  toolbar: {
+  	height: 56,
+    backgroundColor: '#000000',
+    justifyContent: 'center'
+  },
+  buttonText: {
+    fontSize: 18,
+    color: 'white',
+    alignSelf: 'center'
+  },
+  button: {
+    height: 44,
+    width: 200,
+    backgroundColor: '#4883da',
+    alignSelf: 'center',
+    justifyContent: 'center'
   },
   content_summary:
-  {
-    flex: 1,
-    fontWeight: '300',
-    fontSize: 10,
-    marginTop: 10,
-    textAlign:'justify',
+   {
+     flex: 1,
+     fontWeight: '300',
+     fontSize: 10,
+     marginTop: 10,
+     textAlign:'justify',
 
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  thumb: {
-    width: 32,
-    height: 32,
-  },
-  row:{
-   flex:1,
-   flexDirection:'column',//'row'
-   padding:10,
-   borderBottomWidth: 1,
-   borderColor: '#d7d7d7',
- },
- selectionText:{
-   fontSize:15,
-   paddingTop:3,
-   color:'#000000',
-   textAlign:'right'
- },
- separator: {
-   flex: 1,
-   height: StyleSheet.hairlineWidth,
-   backgroundColor: '#000000',
- },
- textStyle: {
-   fontSize:12,
-   textAlign:'left',
-   color: '#000000',
- },
- navbarstyle: {
-   backgroundColor: '#000000',
-    alignItems: 'center',
-    height:50,
- }
+   },
+     welcome: {
+       fontSize: 20,
+       textAlign: 'center',
+       margin: 10,
+     },
+     instructions: {
+       textAlign: 'center',
+       color: '#333333',
+       marginBottom: 5,
+     },
+     thumb: {
+       width: 32,
+       height: 32,
+     },
+     row:{
+      flex:1,
+      flexDirection:'column',//'row'
+      padding:10,
+      borderBottomWidth: 1,
+      borderColor: '#d7d7d7',
+    },
+    selectionText:{
+      fontSize:15,
+      paddingTop:3,
+      color:'#000000',
+      textAlign:'right'
+    },
+    separator: {
+      flex: 1,
+      height: StyleSheet.hairlineWidth,
+      backgroundColor: '#000000',
+    },
+    textStyle: {
+      fontSize:12,
+      textAlign:'left',
+      color: '#000000',
+    },
+    navbarstyle: {
+      backgroundColor: '#000000',
+       alignItems: 'center',
+       height:50,
+    }
 });
-var NavigationBarRouteMapper = {
-  LeftButton(route, navigator, index, navState) {
-    return null;
-  },
-  RightButton(route, navigator, index, navState) {
-    return null;
-  },
-  Title(route, navigator, index, navState) {
-    return (
-      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
-        <Text style={{color: 'white', margin: 10, fontSize: 16}}>
-          React List Demo
-        </Text>
-      </TouchableOpacity>
-    );
-  }
-};
-
-module.exports = HomePage;
+module.exports=HomePage;
