@@ -39,7 +39,7 @@ class DetailPage extends Component {
                   <Text style={styles.titleStyle}>
                     {this.props.jsoncontent.title}</Text>
                     <View style={styles.container}>
-                      <Text>
+                      <Text style={styles.content_style}>
                               {this.props.jsoncontent.content}
                       </Text>
                     </View>
@@ -58,7 +58,7 @@ var styles = StyleSheet.create({
 	container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     backgroundColor: '#F5FCFF',
   },
   toolbar: {
@@ -112,7 +112,6 @@ var styles = StyleSheet.create({
  titleStyle: {
    fontSize:12,
    color: '#FF0000',
-   paddingTop:50,
    fontSize:20
 
  },
@@ -123,11 +122,14 @@ var styles = StyleSheet.create({
    fontSize:36
 
  },
- navbarstyle: {
-   backgroundColor: '#000000',
-    alignItems: 'center',
-    height:50,
+ content_style:
+ {
+   fontSize:10,
+   color: '#000000',
+   fontFamily:'merriweather_regular',
+   textAlign: "justify"
  }
+
 });
 
 

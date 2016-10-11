@@ -69,12 +69,17 @@ class HomePage extends Component {
 
 	_navigateToSettings () {
 		this.props.navigator.push({
-			id: 'detailview'
+      id: 'detailview',
+      name: 'detailview',
+      passProps: {
+      position:rowID,
+      jsoncontent: rowData
+    }
 		});
 	}
 
 	_onActionSelected () {
-		this._navigateToSettings()
+		//this._navigateToSettings()
 	}
 
 	render () {
@@ -119,10 +124,18 @@ class HomePage extends Component {
         >
         <View style ={styles.row}>
           <Text style={styles.textStyle}>{rowData.title}</Text>
-          <View style={{flexDirection: 'row'}}>
-               <Text numberOfLines={3} style={styles.content_summary}>
-                {rowData.contentSnippet}
+          <View style={{flexDirection: 'column'}}>
+              <Text  style={styles.content_date}>
+               Dated : {rowData.publishedDate}
+              </Text>
+               <Text  numberOfLines={3} style={styles.content_link}>
+                Read On Web : {rowData.link}
                </Text>
+                 <View style={{flexDirection: 'column'}}>
+               <Text  style={styles.content_categories}>
+                {rowData.categories}
+               </Text>
+               </View>
            </View>
         </View>
       </TouchableHighlight>
@@ -144,7 +157,7 @@ class HomePage extends Component {
 
 }
 var toolbarActions = [
-	{title: 'DetailView', icon: require('./images/settings.png'), show: 'always'},
+	{title: 'detailview', icon: require('./images/info.png'), show: 'always'},
 ];
 const styles = StyleSheet.create({
 	parentContainer: {
@@ -155,6 +168,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  category :{
+    marginRight: 10,
+
   },
   toolbar: {
   	height: 56,
@@ -173,6 +190,24 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center'
   },
+  content_link:{
+    fontSize: 10,
+    marginTop: 3,
+    textAlign:'justify',
+    fontFamily: 'merriweather_regular'
+  },
+  content_date:{
+    fontSize: 10,
+    marginTop: 3,
+    textAlign:'justify',
+    fontFamily: 'merriweather_regular'
+  },
+  content_categories:{
+    fontSize: 10,
+    marginTop: 3,
+    textAlign:'justify',
+    fontFamily: 'merriweather_regular'
+  },
   content_summary:
    {
      flex: 1,
@@ -180,7 +215,7 @@ const styles = StyleSheet.create({
      fontSize: 10,
      marginTop: 10,
      textAlign:'justify',
-
+     fontFamily: 'merriweather_regular'
    },
      welcome: {
        fontSize: 20,
@@ -218,6 +253,7 @@ const styles = StyleSheet.create({
       fontSize:12,
       textAlign:'left',
       color: '#000000',
+      fontFamily: 'merriweather_black'
     },
     navbarstyle: {
       backgroundColor: '#000000',

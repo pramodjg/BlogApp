@@ -9,6 +9,7 @@
     "react": "15.3.2",
     "react-native": "0.34.1",
     "react-native-sk-refreshable-listview": "^1.0.0",
-    "react-native-web-container": "^1.0.0"
+    "react-native-web-container": "^1.0.0",
+    "sugar": "^2.0.1"
   }
 }
