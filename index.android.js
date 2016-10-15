@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 var HomePage = require('./HomePage');
- var DetailPage = require('./DetailPage');
+var DetailPage = require('./DetailPage');
 
 var _navigator;
 
@@ -50,4 +50,4 @@ class App extends Component {
   }
 }
 
-AppRegistry.registerComponent('blogapp', () => App);
+AppRegistry.registerComponent('BlogApp', () => App);

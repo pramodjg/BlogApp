@@ -12,12 +12,15 @@ import {
    Image,
   ListView,
   TouchableHighlight,
-    RefreshControl,
+  RefreshControl,
 
 } from 'react-native';
 
+
+
 var _navigator;
 var Api = require('./RssFeedApi');
+var dateFormatApi=require('./DateFormat');
 
 class HomePage extends Component {
 
@@ -89,10 +92,10 @@ class HomePage extends Component {
 				<ToolbarAndroid
 					title='Home'
 					logo={require('./images/logo.png')}
-          actions={toolbarActions}
-          style={styles.toolbar}
-          titleColor='white'
-          onActionSelected={() => this._onActionSelected()}
+                    actions={toolbarActions}
+                    style={styles.toolbar}
+                       titleColor='white'
+                    onActionSelected={() => this._onActionSelected()}
         />
         <View style={styles.container}>
 					<ListView
@@ -126,16 +129,12 @@ class HomePage extends Component {
           <Text style={styles.textStyle}>{rowData.title}</Text>
           <View style={{flexDirection: 'column'}}>
               <Text  style={styles.content_date}>
-               Dated : {rowData.publishedDate}
+               Dated : {dateFormatApi(new Date(rowData.publishedDate),"dddd, mmmm dS, yyyy")}
               </Text>
                <Text  numberOfLines={3} style={styles.content_link}>
                 Read On Web : {rowData.link}
                </Text>
-                 <View style={{flexDirection: 'column'}}>
-               <Text  style={styles.content_categories}>
-                {rowData.categories}
-               </Text>
-               </View>
+                 
            </View>
         </View>
       </TouchableHighlight>

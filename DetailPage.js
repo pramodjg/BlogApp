@@ -12,8 +12,12 @@ import {
   ViewPagerAndroid,
   Navigator
   } from 'react-native';
+  
+  import Hr from './Hr';
 
 var _navigator;
+var dateFormatApi=require('./DateFormat');
+
 
 class DetailPage extends Component {
 
@@ -30,19 +34,33 @@ class DetailPage extends Component {
 					title='Details'
 					navIcon={require('./images/back_arrow.png')}
 					onIconClicked={() => this.props.navigator.pop()}
-          style={styles.toolbar}
-          titleColor='white'
-        />
-				<View style={styles.container}>
-          <ScrollView>
+                    style={styles.toolbar}
+                    titleColor='white'
+                 />
+			<View style={styles.container}>
+            <ScrollView>
               <View style={styles.container}>
                   <Text style={styles.titleStyle}>
                     {this.props.jsoncontent.title}</Text>
-                    <View style={styles.container}>
-                      <Text style={styles.content_style}>
-                              {this.props.jsoncontent.content}
-                      </Text>
+				    <Hr lineColor='#b3b3b3'/> 
+					 <View style={{flexDirection: 'row'}}>
+                      <Image source={require('./images/img_like.png')} />
+					  <Image source={require('./images/img_comment.png')} />
+					  <Image source={require('./images/img_share.png')} />
                     </View>
+              
+                    <View style={{flexDirection: 'column'}}>
+							<Text  style={styles.content_date}>
+								Dated : {dateFormatApi(new Date(this.props.jsoncontent.publishedDate),"dddd, mmmm dS, yyyy")}
+							</Text>
+						  <Text style={styles.content_style}>
+								  {this.props.jsoncontent.content}
+						  </Text>
+						    <Hr lineColor='#b3b3b3'/> 
+						  <Text style={styles.content_categories}>
+								  {this.props.jsoncontent.categories}
+						  </Text>
+	                  </View>
               </View>
            </ScrollView>
 	      </View>
@@ -109,12 +127,14 @@ var styles = StyleSheet.create({
    height: StyleSheet.hairlineWidth,
    backgroundColor: '#000000',
  },
- titleStyle: {
-   fontSize:12,
-   color: '#FF0000',
-   fontSize:20
-
- },
+  titleStyle: {
+      fontSize:20,
+      textAlign:'left',
+      color: '#000000',
+	  marginTop:10,
+	  marginBottom:5,
+      fontFamily: 'merriweather_black'
+    },
  textStyle: {
    fontSize:12,
    color: '#FF0000',
@@ -127,75 +147,23 @@ var styles = StyleSheet.create({
    fontSize:10,
    color: '#000000',
    fontFamily:'merriweather_regular',
-   textAlign: "justify"
- }
+   textAlign: "justify",
+   marginBottom:10
+ },
+ content_categories:{
+    fontSize: 10,
+    marginTop: 10,
+    textAlign:'justify',
+    fontFamily: 'merriweather_regular'
+  },
+ content_date:{
+    fontSize: 10,
+    marginTop: 5,
+	marginBottom: 5,
+    textAlign:'justify',
+    fontFamily: 'merriweather_regular'
+  }
 
 });
 
-
-
-
-// ;
-// class DetailPage extends Component
-// {
-//   constructor(props)
-//   {
-//     super(props);
-//   }
-//
-//
-//   render() {
-//     return (
-//       <Navigator
-//           renderScene={this.renderScene.bind(this)}
-//           navigator={this.props.navigator}
-//           navigationBar={
-//             <Navigator.NavigationBar style={styles.navbarstyle}
-//                 routeMapper={NavigationBarRouteMapper} />
-//           }
-//            />
-//    );
-//
-// }
-
-//   );
-// }
-// }
-//
-// var NavigationBarRouteMapper = {
-//   LeftButton(route, navigator, index, navState) {
-//     return (
-//       <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}
-//           onPress={() => navigator.parentNavigator.pop()}>
-//         <Text style={{color: 'white', margin: 10,}}>
-//           back
-//         </Text>
-//       </TouchableOpacity>
-//     );
-//   },
-//   RightButton(route, navigator, index, navState) {
-//     return null;
-//   },
-//   Title(route, navigator, index, navState) {
-//     return (
-//       <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
-//         <Text style={{color: '#FFFFFF', margin: 10, fontSize: 16}}>
-//           List Detail Page
-//         </Text>
-//       </TouchableOpacity>
-//     );
-//   }
-// };
-//
-//
-//
-// const styles = StyleSheet.create({
-//   container: {
-// flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     backgroundColor: '#FFFFFF',
-//   },
-
-// });
 module.exports=DetailPage;
