@@ -13,10 +13,10 @@ import {
   Navigator
   } from 'react-native';
   
-  import Hr from './Hr';
+  import Hr from './components/Hr';
 
 var _navigator;
-var dateFormatApi=require('./DateFormat');
+var dateFormatApi=require('./api/DateFormat');
 
 
 class DetailPage extends Component {
@@ -28,10 +28,12 @@ class DetailPage extends Component {
 
 	render () {
 		_navigator = this.props.navigator;
+		
+		let txtview=this.props.jsoncontent.categories.map(function(strValue){return <Text style={styles.content_categories}> {strValue}</Text> });
 		return (
 			<View style={styles.parentContainer}>
 				<ToolbarAndroid
-					title='Details'
+					title='Articles - @lightrainstech'
 					navIcon={require('./images/back_arrow.png')}
 					onIconClicked={() => this.props.navigator.pop()}
                     style={styles.toolbar}
@@ -43,10 +45,10 @@ class DetailPage extends Component {
                   <Text style={styles.titleStyle}>
                     {this.props.jsoncontent.title}</Text>
 				    <Hr lineColor='#b3b3b3'/> 
-					 <View style={{flexDirection: 'row'}}>
-                      <Image source={require('./images/img_like.png')} />
-					  <Image source={require('./images/img_comment.png')} />
-					  <Image source={require('./images/img_share.png')} />
+					 <View style={styles.blog_options}>
+                      <Image style={styles.blog_options} source={require('./images/img_like.png')} />
+					  <Image style={styles.blog_options} source={require('./images/img_comment.png')} />
+					  <Image style={styles.blog_options} source={require('./images/img_share.png')} />
                     </View>
               
                     <View style={{flexDirection: 'column'}}>
@@ -57,9 +59,9 @@ class DetailPage extends Component {
 								  {this.props.jsoncontent.content}
 						  </Text>
 						    <Hr lineColor='#b3b3b3'/> 
-						  <Text style={styles.content_categories}>
-								  {this.props.jsoncontent.categories}
-						  </Text>
+						  <View style={{flexDirection: 'row'}}>
+							  {txtview}
+						 </View>
 	                  </View>
               </View>
            </ScrollView>
@@ -153,6 +155,7 @@ var styles = StyleSheet.create({
  content_categories:{
     fontSize: 10,
     marginTop: 10,
+	marginRight:5,
     textAlign:'justify',
     fontFamily: 'merriweather_regular'
   },
@@ -162,8 +165,18 @@ var styles = StyleSheet.create({
 	marginBottom: 5,
     textAlign:'justify',
     fontFamily: 'merriweather_regular'
+  },
+  blog_options:{
+	  flexDirection:'row',
+	  marginTop:5,
+	  marginBottom:5,
+	  marginLeft:15,
+	  marginRight:10
+	
   }
 
 });
 
 module.exports=DetailPage;
+
+//curl "http://localhost:8081/index.android.bundle?platform=android" -o "android/app/src/main/assets/index.android.bundle"

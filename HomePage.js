@@ -19,8 +19,8 @@ import {
 
 
 var _navigator;
-var Api = require('./RssFeedApi');
-var dateFormatApi=require('./DateFormat');
+var Api = require('./api/RssFeedApi');
+var dateFormatApi=require('./api/DateFormat');
 
 class HomePage extends Component {
 
@@ -90,12 +90,13 @@ class HomePage extends Component {
 		return (
 			<View style={styles.parentContainer}>
 				<ToolbarAndroid
-					title='Home'
+					title='Articles - @lightrainstech'
 					logo={require('./images/logo.png')}
-                    actions={toolbarActions}
+					navIcon={require('./images/ic_menu_nav.png')}    
+					onIconClicked={() => this.props.navigator.pop()}					
                     style={styles.toolbar}
-                       titleColor='white'
-                    onActionSelected={() => this._onActionSelected()}
+                    titleColor='white'
+                    
         />
         <View style={styles.container}>
 					<ListView
@@ -156,7 +157,7 @@ class HomePage extends Component {
 
 }
 var toolbarActions = [
-	{title: 'detailview', icon: require('./images/info.png'), show: 'always'},
+	{title: 'detailview', icon: require('./images/ic_menu_nav.png'), show: 'always'},
 ];
 const styles = StyleSheet.create({
 	parentContainer: {
