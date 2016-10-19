@@ -50,4 +50,4 @@ class App extends Component {
   }
 }
 
-AppRegistry.registerComponent('BlogApp', () => App);
+AppRegistry.registerComponent('blogapp', () => App);
