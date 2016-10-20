@@ -12,7 +12,7 @@ import {
   ViewPagerAndroid,
   Navigator
   } from 'react-native';
-  
+
   import Hr from './components/Hr';
 
 var _navigator;
@@ -28,7 +28,7 @@ class DetailPage extends Component {
 
 	render () {
 		_navigator = this.props.navigator;
-		
+
 		let txtview=this.props.jsoncontent.categories.map(function(strValue){return <Text style={styles.content_categories}> {strValue}</Text> });
 		return (
 			<View style={styles.parentContainer}>
@@ -36,21 +36,20 @@ class DetailPage extends Component {
 					title='Articles - @lightrainstech'
 					navIcon={require('./images/back_arrow.png')}
 					onIconClicked={() => this.props.navigator.pop()}
-                    style={styles.toolbar}
-                    titleColor='white'
-                 />
+          style={styles.toolbar}
+          titleColor='white' />
 			<View style={styles.container}>
             <ScrollView>
               <View style={styles.container}>
                   <Text style={styles.titleStyle}>
                     {this.props.jsoncontent.title}</Text>
-				    <Hr lineColor='#b3b3b3'/> 
+				    <Hr lineColor='#b3b3b3'/>
 					 <View style={styles.blog_options}>
                       <Image style={styles.blog_options} source={require('./images/img_like.png')} />
 					  <Image style={styles.blog_options} source={require('./images/img_comment.png')} />
 					  <Image style={styles.blog_options} source={require('./images/img_share.png')} />
                     </View>
-              
+
                     <View style={{flexDirection: 'column'}}>
 							<Text  style={styles.content_date}>
 								Dated : {dateFormatApi(new Date(this.props.jsoncontent.publishedDate),"dddd, mmmm dS, yyyy")}
@@ -58,7 +57,7 @@ class DetailPage extends Component {
 						  <Text style={styles.content_style}>
 								  {this.props.jsoncontent.content}
 						  </Text>
-						    <Hr lineColor='#b3b3b3'/> 
+						    <Hr lineColor='#b3b3b3'/>
 						  <View style={{flexDirection: 'row'}}>
 							  {txtview}
 						 </View>
@@ -77,6 +76,7 @@ var styles = StyleSheet.create({
 	},
 	container: {
     flex: 1,
+    padding:5,
     justifyContent: 'center',
     alignItems: 'flex-start',
     backgroundColor: '#F5FCFF',
@@ -172,7 +172,7 @@ var styles = StyleSheet.create({
 	  marginBottom:5,
 	  marginLeft:15,
 	  marginRight:10
-	
+
   }
 
 });

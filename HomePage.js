@@ -91,12 +91,10 @@ class HomePage extends Component {
 			<View style={styles.parentContainer}>
 				<ToolbarAndroid
 					title='Articles - @lightrainstech'
-					logo={require('./images/logo.png')}
-					navIcon={require('./images/ic_menu_nav.png')}    
-					onIconClicked={() => this.props.navigator.pop()}					
+					logo={require('./images/logo.png')}	
                     style={styles.toolbar}
                     titleColor='white'
-                    
+
         />
         <View style={styles.container}>
 					<ListView
@@ -135,7 +133,7 @@ class HomePage extends Component {
                <Text  numberOfLines={3} style={styles.content_link}>
                 Read On Web : {rowData.link}
                </Text>
-                 
+
            </View>
         </View>
       </TouchableHighlight>
